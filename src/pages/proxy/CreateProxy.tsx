@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { proxySchema, FormData } from "./helper";
 import CreateProxyTable from "./CreateProxyTable";
 import { createProxy } from "../../services/proxy";

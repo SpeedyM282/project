@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
-import { getProxies } from "../services/proxy";
+import { deleteProxy, getProxies } from "../services/proxy";
 import { useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import {
 	Box,
 	Button,
+	IconButton,
 	Modal,
 	Paper,
 	Stack,
@@ -17,6 +18,7 @@ import {
 	TableRow,
 	Typography,
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const Dashboard = () => {
 	const navigate = useNavigate();
@@ -35,6 +37,12 @@ const Dashboard = () => {
 		localStorage.setItem("token", "");
 		localStorage.setItem("inn", "");
 		navigate("/login");
+	};
+
+	const handleDeleteProxy = (id: string) => {
+		deleteProxy(id).then((res) =>
+			setProxies((prev) => prev.filter((e: any) => e._id !== id))
+		);
 	};
 
 	return (
@@ -95,26 +103,27 @@ const Dashboard = () => {
 				</Stack>
 
 				<Box m={"50px 0"}>
-					<TableContainer component={Paper}>
-						<Table sx={{ minWidth: 650 }} aria-label="simple table">
-							<TableHead>
-								<TableRow
-									sx={{
-										bgcolor: "#d3d3d3",
-									}}
-								>
-									<TableCell>№</TableCell>
-									<TableCell align="center">Ishonchnoma raqami</TableCell>
-									<TableCell align="center">Berilgan sana</TableCell>
-									<TableCell align="center">Amal qilish muddati</TableCell>
-									<TableCell align="center">Shartnoma raqami</TableCell>
-									<TableCell align="center">Shartnoma sanasi</TableCell>
-								</TableRow>
-							</TableHead>
+					{proxies.length ? (
+						<TableContainer component={Paper}>
+							<Table sx={{ minWidth: 650 }} aria-label="simple table">
+								<TableHead>
+									<TableRow
+										sx={{
+											bgcolor: "#d3d3d3",
+										}}
+									>
+										<TableCell>№</TableCell>
+										<TableCell align="center">Ishonchnoma raqami</TableCell>
+										<TableCell align="center">Berilgan sana</TableCell>
+										<TableCell align="center">Amal qilish muddati</TableCell>
+										<TableCell align="center">Shartnoma raqami</TableCell>
+										<TableCell align="center">Shartnoma sanasi</TableCell>
+										<TableCell align="center"></TableCell>
+									</TableRow>
+								</TableHead>
 
-							<TableBody>
-								{proxies.length ? (
-									proxies.map((proxy: any, index) => (
+								<TableBody>
+									{proxies.map((proxy: any, index) => (
 										<TableRow
 											key={index}
 											sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -141,16 +150,24 @@ const Dashboard = () => {
 												{new Date(proxy.dateAgreement).getMonth()}/
 												{new Date(proxy.dateAgreement).getFullYear()}
 											</TableCell>
+											<TableCell align="center">
+												<IconButton
+													color="error"
+													onClick={() => handleDeleteProxy(proxy._id)}
+												>
+													<DeleteIcon />
+												</IconButton>
+											</TableCell>
 										</TableRow>
-									))
-								) : (
-									<Typography m="100px auto" textAlign="center" variant="h4">
-										Hali xujjatlar yo'q
-									</Typography>
-								)}
-							</TableBody>
-						</Table>
-					</TableContainer>
+									))}
+								</TableBody>
+							</Table>
+						</TableContainer>
+					) : (
+						<Typography m="100px auto" textAlign="center" variant="h4">
+							Hali xujjatlar yo'q
+						</Typography>
+					)}
 				</Box>
 			</Stack>
 		</>
