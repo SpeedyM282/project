@@ -3,7 +3,20 @@ import AddIcon from "@mui/icons-material/Add";
 import { getProxies } from "../services/proxy";
 import { useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { Box, Button, Modal, Stack, Typography } from "@mui/material";
+import {
+	Box,
+	Button,
+	Modal,
+	Paper,
+	Stack,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+	Typography,
+} from "@mui/material";
 
 const Dashboard = () => {
 	const navigate = useNavigate();
@@ -81,12 +94,53 @@ const Dashboard = () => {
 					</Stack>
 				</Stack>
 
-				<Box>
-					{!proxies.length && (
-						<Typography m="100px auto" textAlign="center" variant="h4">
-							Hali xujjatlar yo'q
-						</Typography>
-					)}
+				<Box m={"50px 0"}>
+					<TableContainer component={Paper}>
+						<Table sx={{ minWidth: 650 }} aria-label="simple table">
+							<TableHead>
+								<TableRow
+									sx={{
+										bgcolor: "#d3d3d3",
+									}}
+								>
+									<TableCell>№</TableCell>
+									<TableCell align="center">Ishonchnoma raqami</TableCell>
+									<TableCell align="center">Berilgan sana</TableCell>
+									<TableCell align="center">Amal qilish muddati</TableCell>
+									<TableCell align="center">Shartnoma raqami</TableCell>
+									<TableCell align="center">Shartnoma sanasi</TableCell>
+								</TableRow>
+							</TableHead>
+
+							<TableBody>
+								{proxies.length ? (
+									proxies.map((proxy: any, index) => (
+										<TableRow
+											key={index}
+											sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+										>
+											<TableCell component="th" scope="row">
+												{index + 1}
+											</TableCell>
+											<TableCell align="center">{proxy.proxyNumber}</TableCell>
+											<TableCell align="center">{proxy.dateHead}</TableCell>
+											<TableCell align="center">{proxy.dateEnd}</TableCell>
+											<TableCell align="center">
+												{proxy.agreementNumber}
+											</TableCell>
+											<TableCell align="center">
+												{proxy.dateAgreement}
+											</TableCell>
+										</TableRow>
+									))
+								) : (
+									<Typography m="100px auto" textAlign="center" variant="h4">
+										Hali xujjatlar yo'q
+									</Typography>
+								)}
+							</TableBody>
+						</Table>
+					</TableContainer>
 				</Box>
 			</Stack>
 		</>
