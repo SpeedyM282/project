@@ -1,14 +1,15 @@
 import { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 const Wrapper = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
 
 	useEffect(() => {
 		const token = localStorage.getItem("token");
-		if (token) {
+		if (token && location.pathname === "/") {
 			navigate("/dashboard");
-		} else {
+		} else if (!token && location.pathname === "/") {
 			navigate("/login");
 		}
 	}, []);
