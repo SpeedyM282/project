@@ -123,13 +123,23 @@ const Dashboard = () => {
 												{index + 1}
 											</TableCell>
 											<TableCell align="center">{proxy.proxyNumber}</TableCell>
-											<TableCell align="center">{proxy.dateHead}</TableCell>
-											<TableCell align="center">{proxy.dateEnd}</TableCell>
+											<TableCell align="center">
+												{new Date(proxy.dateHead).getDate()}/
+												{new Date(proxy.dateHead).getMonth()}/
+												{new Date(proxy.dateHead).getFullYear()}
+											</TableCell>
+											<TableCell align="center">
+												{new Date(proxy.dateEnd).getDate()}/
+												{new Date(proxy.dateEnd).getMonth()}/
+												{new Date(proxy.dateEnd).getFullYear()}
+											</TableCell>
 											<TableCell align="center">
 												{proxy.agreementNumber}
 											</TableCell>
 											<TableCell align="center">
-												{proxy.dateAgreement}
+												{new Date(proxy.dateAgreement).getDate()}/
+												{new Date(proxy.dateAgreement).getMonth()}/
+												{new Date(proxy.dateAgreement).getFullYear()}
 											</TableCell>
 										</TableRow>
 									))
