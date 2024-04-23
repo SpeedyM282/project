@@ -16,6 +16,7 @@ import {
 	TableContainer,
 	TextField,
 } from "@mui/material";
+import { productsArray, units } from "./helper";
 
 interface IProps {
 	products: IProduct[];
@@ -104,8 +105,11 @@ const CreateProxyTable = ({ products, setProducts }: IProps) => {
 												handleProductChange(e, "productCatalog", index)
 											}
 										>
-											<MenuItem value="Hello">Hello</MenuItem>
-											<MenuItem value="World">World</MenuItem>
+											{productsArray.map((e) => (
+												<MenuItem key={e} value={e}>
+													{e}
+												</MenuItem>
+											))}
 										</Select>
 									</FormControl>
 								</TableCell>
@@ -127,8 +131,11 @@ const CreateProxyTable = ({ products, setProducts }: IProps) => {
 												handleProductChange(e, "UnitOfMeasure", index)
 											}
 										>
-											<MenuItem value="Good">Good</MenuItem>
-											<MenuItem value="Bye">Bye</MenuItem>
+											{units.map((e) => (
+												<MenuItem key={e} value={e}>
+													{e}
+												</MenuItem>
+											))}
 										</Select>
 									</FormControl>
 								</TableCell>

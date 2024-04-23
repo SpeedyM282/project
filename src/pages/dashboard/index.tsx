@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
-import { deleteProxy, getProxies } from "../services/proxy";
 import { useNavigate } from "react-router-dom";
+import CustomMenu from "../../components/CustomMenu";
 import LogoutIcon from "@mui/icons-material/Logout";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { deleteProxy, getProxies } from "../../services/proxy";
+import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 import {
 	Box,
 	Button,
-	IconButton,
+	MenuItem,
 	Modal,
 	Paper,
 	Stack,
@@ -18,7 +21,8 @@ import {
 	TableRow,
 	Typography,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { useReactToPrint } from "react-to-print";
+import Document from "./Document";
 
 const Dashboard = () => {
 	const navigate = useNavigate();
@@ -26,11 +30,16 @@ const Dashboard = () => {
 	const [open, setOpen] = useState(false);
 	const handleClose = () => setOpen(false);
 	const [proxies, setProxies] = useState([]);
+	const [printData, setPrintData] = useState<any>();
+
+	const componentRef = useRef();
+
+	const handlePrint = useReactToPrint({
+		content: (): any => componentRef.current,
+	});
 
 	useEffect(() => {
-		getProxies()
-			.then((res) => setProxies(res.data?.data))
-			.catch(() => alert("Xatolik yuz berdi\nIltimos keyinroq urunib ko'ring"));
+		getProxies().then((res: any) => setProxies(res.data?.data));
 	}, []);
 
 	const handleLogout = () => {
@@ -40,13 +49,19 @@ const Dashboard = () => {
 	};
 
 	const handleDeleteProxy = (id: string) => {
-		deleteProxy(id).then((res) =>
+		deleteProxy(id).then(() =>
 			setProxies((prev) => prev.filter((e: any) => e._id !== id))
 		);
 	};
 
+	console.log(printData);
+
 	return (
 		<>
+			<Stack display="none">
+				<Document printData={printData} ref={componentRef} />
+			</Stack>
+
 			<Modal
 				open={open}
 				onClose={handleClose}
@@ -126,7 +141,9 @@ const Dashboard = () => {
 									{proxies.map((proxy: any, index) => (
 										<TableRow
 											key={index}
-											sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+											sx={{
+												"&:last-child td, &:last-child th": { border: 0 },
+											}}
 										>
 											<TableCell component="th" scope="row">
 												{index + 1}
@@ -151,12 +168,31 @@ const Dashboard = () => {
 												{new Date(proxy.dateAgreement).getFullYear()}
 											</TableCell>
 											<TableCell align="center">
-												<IconButton
-													color="error"
-													onClick={() => handleDeleteProxy(proxy._id)}
-												>
-													<DeleteIcon />
-												</IconButton>
+												<CustomMenu>
+													<MenuItem
+														sx={{
+															display: "flex",
+															gap: 1,
+															color: "#2196f3",
+														}}
+														onClick={async () => {
+															await setPrintData(proxy);
+															handlePrint();
+														}}
+													>
+														<LocalPrintshopIcon color="primary" /> Chop etish
+													</MenuItem>
+													<MenuItem
+														sx={{
+															display: "flex",
+															gap: 1,
+															color: "#ba000d",
+														}}
+														onClick={() => handleDeleteProxy(proxy._id)}
+													>
+														<DeleteIcon color="error" /> O'chirish
+													</MenuItem>
+												</CustomMenu>
 											</TableCell>
 										</TableRow>
 									))}

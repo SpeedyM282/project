@@ -32,9 +32,7 @@ const Register = () => {
 	});
 
 	const onSubmit: SubmitHandler<FormData> = (data) => {
-		signUp(data)
-			.then(() => navigate("/login"))
-			.catch(() => alert("Xatolik yuz berdi\nIltimos keyinroq urunib ko'ring"));
+		signUp(data).then(() => navigate("/login"));
 	};
 
 	return (
@@ -55,7 +53,7 @@ const Register = () => {
 				width="100%"
 			>
 				<TextField
-					label="Ism"
+					label="Korxona nomi"
 					{...register("name")}
 					error={!!errors.name}
 					helperText={errors.name?.message}

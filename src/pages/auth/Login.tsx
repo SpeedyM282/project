@@ -29,13 +29,11 @@ const Login = () => {
 	});
 
 	const onSubmit: SubmitHandler<FormData> = (data) => {
-		login(data)
-			.then((res) => {
-				localStorage.setItem("token", res.data?.token);
-				localStorage.setItem("inn", res.data?.enterprise?.inn);
-				navigate("/dashboard");
-			})
-			.catch(() => alert("Xatolik yuz berdi\nIltimos keyinroq urunib ko'ring"));
+		login(data).then((res: any) => {
+			localStorage.setItem("token", res.data?.token);
+			localStorage.setItem("inn", res.data?.enterprise?.inn);
+			navigate("/dashboard");
+		});
 	};
 
 	return (
@@ -56,7 +54,7 @@ const Login = () => {
 				width="100%"
 			>
 				<TextField
-					label="Ism"
+					label="Korxona nomi"
 					{...register("name")}
 					error={!!errors.name}
 					helperText={errors.name?.message}

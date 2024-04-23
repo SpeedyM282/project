@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { proxySchema, FormData } from "./helper";
 import CreateProxyTable from "./CreateProxyTable";
-import { createProxy } from "../../services/proxy";
+import { createProxy, searchByInn, searchMyInn } from "../../services/proxy";
 import { Link, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -24,6 +24,7 @@ export interface IProduct {
 
 const CreateProxy = () => {
 	const navigate = useNavigate();
+	const myInn = localStorage.getItem("inn");
 	const [products, setProducts] = useState<IProduct[]>([
 		{
 			amount: 0,
@@ -36,10 +37,19 @@ const CreateProxy = () => {
 	const {
 		register,
 		handleSubmit,
+		setValue,
 		formState: { errors },
+		watch,
 	} = useForm<FormData>({
 		resolver: yupResolver(proxySchema),
 	});
+
+	const searchContragent = () => {
+		const contragentInn = watch("hisEnterpriseInn");
+		if (contragentInn) {
+			searchByInn(contragentInn.toString()).then((res) => console.log(res));
+		}
+	};
 
 	const onSubmit: SubmitHandler<FormData> = (data) => {
 		const newData = {
@@ -47,13 +57,24 @@ const CreateProxy = () => {
 			goods: products,
 		};
 
-		createProxy(newData)
-			.then(() => {
-				alert("Saqlandi✅");
-				navigate("/dashboard");
-			})
-			.catch(() => alert("Xatolik yuz berdi\nIltimos keyinroq urunib ko'ring"));
+		createProxy(newData).then(() => {
+			alert("Saqlandi✅");
+			navigate("/dashboard");
+		});
 	};
+
+	useEffect(() => {
+		if (myInn) {
+			searchMyInn(myInn).then((res: any) => {
+				setValue("myEnterpriseInn", Number(myInn));
+				setValue("myAddress", res.data?.data?.myAddress);
+				setValue("myAccountNumber", res.data?.data?.myAccountNumber);
+				setValue("myBoss", res.data?.data?.myBoss);
+				setValue("myEnterpriseName", res.data?.data?.myEnterpriseName);
+				setValue("mySWFT", res.data?.data?.mySWFT);
+			});
+		}
+	}, []);
 
 	return (
 		<Stack
@@ -161,7 +182,7 @@ const CreateProxy = () => {
 			>
 				<Stack
 					width="100%"
-					maxWidth="600px"
+					maxWidth="550px"
 					direction="column"
 					gap={5}
 					minWidth="300px"
@@ -171,10 +192,9 @@ const CreateProxy = () => {
 
 						<TextField
 							type="number"
-							label="STIR/JSHSHIR"
+							label="STIR"
 							{...register("myEnterpriseInn")}
 							error={!!errors.myEnterpriseInn}
-							defaultValue={localStorage.getItem("inn")}
 							helperText={errors.myEnterpriseInn?.message}
 						/>
 					</Stack>
@@ -226,9 +246,7 @@ const CreateProxy = () => {
 							<TextField
 								fullWidth
 								label="Bosh hisobchi"
-								{...register("myBoss")}
-								error={!!errors.myBoss}
-								helperText={errors.myBoss?.message}
+								defaultValue={watch("myBoss")}
 							/>
 						</Stack>
 					</Stack>
@@ -236,7 +254,7 @@ const CreateProxy = () => {
 
 				<Stack
 					width="100%"
-					maxWidth="600px"
+					maxWidth="550px"
 					direction="column"
 					gap={5}
 					minWidth="300px"
@@ -244,13 +262,22 @@ const CreateProxy = () => {
 					<Stack direction="column" gap={2}>
 						<Typography variant="h5">Kontragent malumotlari</Typography>
 
-						<TextField
-							type="number"
-							label="STIR/JSHSHIR"
-							{...register("hisEnterpriseInn")}
-							error={!!errors.hisEnterpriseInn}
-							helperText={errors.hisEnterpriseInn?.message}
-						/>
+						<Stack direction="row" gap={2}>
+							<TextField
+								type="number"
+								label="STIR"
+								{...register("hisEnterpriseInn")}
+								error={!!errors.hisEnterpriseInn}
+								helperText={errors.hisEnterpriseInn?.message}
+								sx={{
+									width: "100%",
+								}}
+							/>
+
+							<Button variant="contained" onClick={searchContragent}>
+								Qidirish
+							</Button>
+						</Stack>
 					</Stack>
 
 					<Stack direction="column" gap={2}>
@@ -300,9 +327,7 @@ const CreateProxy = () => {
 							<TextField
 								fullWidth
 								label="Bosh hisobchi"
-								{...register("hisBoss")}
-								error={!!errors.hisBoss}
-								helperText={errors.hisBoss?.message}
+								defaultValue={watch("hisBoss")}
 							/>
 						</Stack>
 					</Stack>
