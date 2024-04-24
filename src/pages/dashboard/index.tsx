@@ -54,8 +54,6 @@ const Dashboard = () => {
 		);
 	};
 
-	console.log(printData);
-
 	return (
 		<>
 			<Stack display="none">

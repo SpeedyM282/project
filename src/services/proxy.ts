@@ -19,7 +19,7 @@ export const getProxies = () =>
 	});
 
 export const searchByInn = (inn: string) =>
-	client.post(`/proxy/search/inn/partner/${inn}`).catch((e) => {
+	client.get(`/proxy/search/inn/partner/${inn}`).catch((e) => {
 		if (e.response?.data?.message) {
 			alert(e.response?.data?.message);
 		} else {

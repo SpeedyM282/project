@@ -45,10 +45,15 @@ const CreateProxy = () => {
 	});
 
 	const searchContragent = () => {
-		const contragentInn = watch("hisEnterpriseInn");
-		console.log(contragentInn);
+		const contragentInn = watch("hisEnterpriseInn").toString();
 		if (contragentInn) {
-			searchByInn(contragentInn.toString()).then((res) => console.log(res));
+			searchByInn(contragentInn).then((res) => {
+				setValue("hisAddress", res?.data?.data?.hisAddress || "");
+				setValue("hisAccountNumber", res?.data?.data?.hisAccountNumber || "");
+				setValue("hisBoss", res?.data?.data?.hisBoss || "");
+				setValue("hisEnterpriseName", res?.data?.data?.hisEnterpriseName || "");
+				setValue("hisSWFT", res?.data?.data?.hisSWFT || "");
+			});
 		}
 	};
 
@@ -65,13 +70,17 @@ const CreateProxy = () => {
 	};
 
 	useEffect(() => {
+		const enterpriseName = localStorage.getItem("name");
 		if (myInn) {
 			searchMyInn(myInn).then((res: any) => {
 				setValue("myEnterpriseInn", Number(myInn));
 				setValue("myAddress", res?.data?.data?.myAddress || "");
 				setValue("myAccountNumber", res?.data?.data?.myAccountNumber || "");
 				setValue("myBoss", res?.data?.data?.myBoss || "");
-				setValue("myEnterpriseName", res?.data?.data?.myEnterpriseName || "");
+				setValue(
+					"myEnterpriseName",
+					res?.data?.data?.myEnterpriseName || enterpriseName || ""
+				);
 				setValue("mySWFT", res?.data?.data?.mySWFT || "");
 			});
 		}
