@@ -9,14 +9,20 @@ export const createProxy = (data: any) =>
 		}
 	});
 
-export const getProxies = () =>
-	client.get("/proxy/get").catch((e) => {
-		if (e.response?.data?.message) {
-			alert(e.response?.data?.message);
-		} else {
-			alert("Xatolik yuz berdi\nIltimos keyinroq urunib ko'ring");
-		}
-	});
+export const getProxies = (page: number) =>
+	client
+		.get("/proxy/get", {
+			params: {
+				page,
+			},
+		})
+		.catch((e) => {
+			if (e.response?.data?.message) {
+				alert(e.response?.data?.message);
+			} else {
+				alert("Xatolik yuz berdi\nIltimos keyinroq urunib ko'ring");
+			}
+		});
 
 export const searchByInn = (inn: string) =>
 	client.get(`/proxy/search/inn/partner/${inn}`).catch((e) => {

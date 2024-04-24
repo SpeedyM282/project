@@ -17,12 +17,15 @@ import {
 	TableBody,
 	TableCell,
 	TableContainer,
+	TableFooter,
 	TableHead,
+	TablePagination,
 	TableRow,
 	Typography,
 } from "@mui/material";
 import { useReactToPrint } from "react-to-print";
 import Document from "./Document";
+import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 
 const Dashboard = () => {
 	const navigate = useNavigate();
@@ -31,6 +34,21 @@ const Dashboard = () => {
 	const handleClose = () => setOpen(false);
 	const [proxies, setProxies] = useState([]);
 	const [printData, setPrintData] = useState<any>();
+	const [page, setPage] = useState(0);
+	const [proxiesCount, setProxiesCount] = useState(0);
+
+	const handleChangePage = (
+		event: React.MouseEvent<HTMLButtonElement> | null,
+		newPage: number
+	) => {
+		setPage(newPage);
+	};
+
+	const handleChangeRowsPerPage = (
+		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+	) => {
+		setPage(0);
+	};
 
 	const componentRef = useRef();
 
@@ -39,8 +57,12 @@ const Dashboard = () => {
 	});
 
 	useEffect(() => {
-		getProxies().then((res: any) => setProxies(res.data?.data));
-	}, []);
+		getProxies(page + 1).then((res: any) => {
+			console.log(res.data);
+			setProxiesCount(res.data?.proxyCount);
+			setProxies(res.data?.data);
+		});
+	}, [page]);
 
 	const handleLogout = () => {
 		localStorage.setItem("token", "");
@@ -195,6 +217,30 @@ const Dashboard = () => {
 										</TableRow>
 									))}
 								</TableBody>
+								<TableFooter
+									sx={{
+										width: "100%",
+										height: "56px",
+										position: "relative",
+									}}
+								>
+									<TableRow
+										sx={{
+											position: "absolute",
+											right: 10,
+										}}
+									>
+										<TablePagination
+											colSpan={3}
+											page={page}
+											count={proxiesCount}
+											rowsPerPageOptions={[]}
+											rowsPerPage={proxies.length}
+											onPageChange={handleChangePage}
+											ActionsComponent={TablePaginationActions}
+										/>
+									</TableRow>
+								</TableFooter>
 							</Table>
 						</TableContainer>
 					) : (
