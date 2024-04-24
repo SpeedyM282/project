@@ -13,11 +13,13 @@ export interface FormData {
 	mySWFT: number;
 	myAddress: string;
 	myBoss: string;
+	myAccountant: string;
 	hisEnterpriseName: string;
 	hisAccountNumber: number;
 	hisSWFT: number;
 	hisAddress: string;
 	hisBoss: string;
+	hisAccountant: string;
 	ReliableJSHR: number;
 	ReliableFIO: string;
 	ReliablePosition: string;
@@ -45,11 +47,13 @@ export const proxySchema = yup.object().shape({
 	mySWFT: yup.number().required("MFO/SWIFT shart"),
 	myAddress: yup.string().required("Manzil shart"),
 	myBoss: yup.string().required("Direktor shart"),
+	myAccountant: yup.string().required("Bosh hisobchi shart"),
 	hisEnterpriseName: yup.string().required("Tashkilot nomi shart"),
 	hisAccountNumber: yup.number().required("Hisob raqami shart"),
 	hisSWFT: yup.number().required("MFO/SWIFT shart"),
 	hisAddress: yup.string().required("Manzil shart"),
 	hisBoss: yup.string().required("Direktor shart"),
+	hisAccountant: yup.string().required("Bosh hisobchi shart"),
 	ReliableJSHR: yup
 		.number()
 		.min(14, "JSHSHIR 14-ta belgidan iborat bo'lishi shart")

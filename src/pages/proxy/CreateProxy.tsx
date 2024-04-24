@@ -51,6 +51,7 @@ const CreateProxy = () => {
 				setValue("hisAddress", res?.data?.data?.hisAddress || "");
 				setValue("hisAccountNumber", res?.data?.data?.hisAccountNumber || "");
 				setValue("hisBoss", res?.data?.data?.hisBoss || "");
+				setValue("hisAccountant", res?.data?.data?.hisAccountant || "");
 				setValue("hisEnterpriseName", res?.data?.data?.hisEnterpriseName || "");
 				setValue("hisSWFT", res?.data?.data?.hisSWFT || "");
 			});
@@ -77,6 +78,7 @@ const CreateProxy = () => {
 				setValue("myAddress", res?.data?.data?.myAddress || "");
 				setValue("myAccountNumber", res?.data?.data?.myAccountNumber || "");
 				setValue("myBoss", res?.data?.data?.myBoss || "");
+				setValue("myAccountant", res?.data?.data?.myAccountant || "");
 				setValue(
 					"myEnterpriseName",
 					res?.data?.data?.myEnterpriseName || enterpriseName || ""
@@ -206,6 +208,7 @@ const CreateProxy = () => {
 							{...register("myEnterpriseInn")}
 							error={!!errors.myEnterpriseInn}
 							helperText={errors.myEnterpriseInn?.message}
+							InputLabelProps={{ shrink: true }}
 						/>
 					</Stack>
 
@@ -217,6 +220,7 @@ const CreateProxy = () => {
 							{...register("myEnterpriseName")}
 							error={!!errors.myEnterpriseName}
 							helperText={errors.myEnterpriseName?.message}
+							InputLabelProps={{ shrink: true }}
 						/>
 
 						<Stack width="100%" direction="row" gap={2}>
@@ -227,6 +231,7 @@ const CreateProxy = () => {
 								{...register("myAccountNumber")}
 								error={!!errors.myAccountNumber}
 								helperText={errors.myAccountNumber?.message}
+								InputLabelProps={{ shrink: true }}
 							/>
 							<TextField
 								fullWidth
@@ -235,6 +240,7 @@ const CreateProxy = () => {
 								{...register("mySWFT")}
 								error={!!errors.mySWFT}
 								helperText={errors.mySWFT?.message}
+								InputLabelProps={{ shrink: true }}
 							/>
 						</Stack>
 
@@ -243,6 +249,7 @@ const CreateProxy = () => {
 							{...register("myAddress")}
 							error={!!errors.myAddress}
 							helperText={errors.myAddress?.message}
+							InputLabelProps={{ shrink: true }}
 						/>
 
 						<Stack width="100%" direction="row" gap={2}>
@@ -252,11 +259,15 @@ const CreateProxy = () => {
 								{...register("myBoss")}
 								error={!!errors.myBoss}
 								helperText={errors.myBoss?.message}
+								InputLabelProps={{ shrink: true }}
 							/>
 							<TextField
 								fullWidth
 								label="Bosh hisobchi"
-								defaultValue={watch("myBoss")}
+								{...register("myAccountant")}
+								error={!!errors.myAccountant}
+								helperText={errors.myAccountant?.message}
+								InputLabelProps={{ shrink: true }}
 							/>
 						</Stack>
 					</Stack>
@@ -274,14 +285,13 @@ const CreateProxy = () => {
 
 						<Stack direction="row" gap={2}>
 							<TextField
+								fullWidth
 								type="number"
 								label="STIR"
 								{...register("hisEnterpriseInn")}
 								error={!!errors.hisEnterpriseInn}
 								helperText={errors.hisEnterpriseInn?.message}
-								sx={{
-									width: "100%",
-								}}
+								InputLabelProps={{ shrink: true }}
 							/>
 
 							<Button variant="contained" onClick={searchContragent}>
@@ -298,6 +308,7 @@ const CreateProxy = () => {
 							{...register("hisEnterpriseName")}
 							error={!!errors.hisEnterpriseName}
 							helperText={errors.hisEnterpriseName?.message}
+							InputLabelProps={{ shrink: true }}
 						/>
 
 						<Stack width="100%" direction="row" gap={2}>
@@ -308,6 +319,7 @@ const CreateProxy = () => {
 								{...register("hisAccountNumber")}
 								error={!!errors.hisAccountNumber}
 								helperText={errors.hisAccountNumber?.message}
+								InputLabelProps={{ shrink: true }}
 							/>
 							<TextField
 								fullWidth
@@ -316,6 +328,7 @@ const CreateProxy = () => {
 								{...register("hisSWFT")}
 								error={!!errors.hisSWFT}
 								helperText={errors.hisSWFT?.message}
+								InputLabelProps={{ shrink: true }}
 							/>
 						</Stack>
 
@@ -324,6 +337,7 @@ const CreateProxy = () => {
 							{...register("hisAddress")}
 							error={!!errors.hisAddress}
 							helperText={errors.hisAddress?.message}
+							InputLabelProps={{ shrink: true }}
 						/>
 
 						<Stack width="100%" direction="row" gap={2}>
@@ -333,11 +347,15 @@ const CreateProxy = () => {
 								{...register("hisBoss")}
 								error={!!errors.hisBoss}
 								helperText={errors.hisBoss?.message}
+								InputLabelProps={{ shrink: true }}
 							/>
 							<TextField
 								fullWidth
 								label="Bosh hisobchi"
-								defaultValue={watch("hisBoss")}
+								{...register("hisAccountant")}
+								error={!!errors.hisAccountant}
+								helperText={errors.hisAccountant?.message}
+								InputLabelProps={{ shrink: true }}
 							/>
 						</Stack>
 					</Stack>

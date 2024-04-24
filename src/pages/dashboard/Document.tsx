@@ -51,7 +51,7 @@ const Document = React.forwardRef(({ printData }: any, ref: any) => {
 					<b>Ishonchnoma berildi: FISH:</b> {printData?.ReliableFIO}
 				</Typography>
 				<Typography fontSize={24}>
-					<b>STIR:</b> {printData?.hisEnterpriseInn}
+					<b>STIR/JSHSHIR:</b> {printData?.ReliableJSHR}
 				</Typography>
 				<Typography fontSize={24}>
 					<b>Qabul qilish:</b> "{printData?.hisEnterpriseName}"
@@ -104,7 +104,7 @@ const Document = React.forwardRef(({ printData }: any, ref: any) => {
 				Rahbar: ______________________________ {printData?.myBoss}
 			</Typography>
 			<Typography fontSize={20}>
-				Bosh hisobchi: ______________________________ {printData?.myBoss}
+				Bosh hisobchi: ______________________________ {printData?.myAccountant}
 			</Typography>
 		</Stack>
 	);
