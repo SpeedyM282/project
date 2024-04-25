@@ -44,12 +44,6 @@ const Dashboard = () => {
 		setPage(newPage);
 	};
 
-	const handleChangeRowsPerPage = (
-		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-	) => {
-		setPage(0);
-	};
-
 	const componentRef = useRef();
 
 	const handlePrint = useReactToPrint({
@@ -231,13 +225,15 @@ const Dashboard = () => {
 										}}
 									>
 										<TablePagination
-											colSpan={3}
 											page={page}
 											count={proxiesCount}
-											rowsPerPageOptions={[]}
-											rowsPerPage={proxies.length}
+											rowsPerPageOptions={[5]}
+											rowsPerPage={5}
 											onPageChange={handleChangePage}
 											ActionsComponent={TablePaginationActions}
+											sx={{
+												border: "none",
+											}}
 										/>
 									</TableRow>
 								</TableFooter>
