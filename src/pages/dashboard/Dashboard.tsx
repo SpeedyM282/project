@@ -1,31 +1,28 @@
-import { useEffect, useRef, useState } from "react";
+import Document from "./Document";
+import CustomMenu from "./CustomMenu";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
-import CustomMenu from "../../components/CustomMenu";
+import { useReactToPrint } from "react-to-print";
+import { useEffect, useRef, useState } from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteProxy, getProxies } from "../../services/proxy";
-import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
+import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 import {
 	Box,
-	Button,
-	MenuItem,
 	Modal,
 	Paper,
 	Stack,
 	Table,
+	Button,
+	TableRow,
 	TableBody,
 	TableCell,
-	TableContainer,
-	TableFooter,
 	TableHead,
-	TablePagination,
-	TableRow,
 	Typography,
+	TableFooter,
+	TableContainer,
+	TablePagination,
 } from "@mui/material";
-import { useReactToPrint } from "react-to-print";
-import Document from "./Document";
-import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 
 const Dashboard = () => {
 	const navigate = useNavigate();
@@ -50,12 +47,15 @@ const Dashboard = () => {
 		content: (): any => componentRef.current,
 	});
 
-	useEffect(() => {
+	const getProxiesPerPage = () => {
 		getProxies(page + 1).then((res: any) => {
-			console.log(res.data);
 			setProxiesCount(res.data?.proxyCount);
 			setProxies(res.data?.data);
 		});
+	};
+
+	useEffect(() => {
+		getProxiesPerPage();
 	}, [page]);
 
 	const handleLogout = () => {
@@ -65,9 +65,10 @@ const Dashboard = () => {
 	};
 
 	const handleDeleteProxy = (id: string) => {
-		deleteProxy(id).then(() =>
-			setProxies((prev) => prev.filter((e: any) => e._id !== id))
-		);
+		deleteProxy(id).then(() => {
+			setPage(0);
+			getProxiesPerPage();
+		});
 	};
 
 	return (
@@ -182,31 +183,13 @@ const Dashboard = () => {
 												{new Date(proxy.dateAgreement).getFullYear()}
 											</TableCell>
 											<TableCell align="center">
-												<CustomMenu>
-													<MenuItem
-														sx={{
-															display: "flex",
-															gap: 1,
-															color: "#2196f3",
-														}}
-														onClick={async () => {
-															await setPrintData(proxy);
-															handlePrint();
-														}}
-													>
-														<LocalPrintshopIcon color="primary" /> Chop etish
-													</MenuItem>
-													<MenuItem
-														sx={{
-															display: "flex",
-															gap: 1,
-															color: "#ba000d",
-														}}
-														onClick={() => handleDeleteProxy(proxy._id)}
-													>
-														<DeleteIcon color="error" /> O'chirish
-													</MenuItem>
-												</CustomMenu>
+												<CustomMenu
+													onPrintClick={async () => {
+														await setPrintData(proxy);
+														handlePrint();
+													}}
+													onDeleteClick={() => handleDeleteProxy(proxy._id)}
+												/>
 											</TableCell>
 										</TableRow>
 									))}

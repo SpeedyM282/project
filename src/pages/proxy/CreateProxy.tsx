@@ -64,9 +64,11 @@ const CreateProxy = () => {
 			goods: products,
 		};
 
-		createProxy(newData).then(() => {
-			alert("Saqlandi✅");
-			navigate("/dashboard");
+		createProxy(newData).then((res) => {
+			if (res?.data) {
+				alert("Saqlandi✅");
+				navigate("/dashboard");
+			}
 		});
 	};
 

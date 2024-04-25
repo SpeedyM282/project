@@ -1,4 +1,4 @@
-import Dashboard from "./pages/dashboard";
+import Dashboard from "./pages/dashboard/Dashboard";
 import Wrapper from "./pages/Wrapper";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
