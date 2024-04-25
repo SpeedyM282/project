@@ -36,11 +36,19 @@ export const proxySchema = yup.object().shape({
 	dateAgreement: yup.string().required("Shartnoma sanasi shart"),
 	myEnterpriseInn: yup
 		.number()
-		.min(9, "STIR 9-ta belgidan iborat bo'lishi shart")
+		.test(
+			"len",
+			"STIR 9-ta belgidan iborat bo'lishi shart",
+			(val) => val?.toString()?.length === 9
+		)
 		.required("STIR shart"),
 	hisEnterpriseInn: yup
 		.number()
-		.min(9, "STIR 9-ta belgidan iborat bo'lishi shart")
+		.test(
+			"len",
+			"STIR 9-ta belgidan iborat bo'lishi shart",
+			(val) => val?.toString()?.length === 9
+		)
 		.required("STIR shart"),
 	myEnterpriseName: yup.string().required("Tashkilot nomi shart"),
 	myAccountNumber: yup.number().required("Hisob raqami shart"),
@@ -56,7 +64,11 @@ export const proxySchema = yup.object().shape({
 	hisAccountant: yup.string().required("Bosh hisobchi shart"),
 	ReliableJSHR: yup
 		.number()
-		.min(14, "JSHSHIR 14-ta belgidan iborat bo'lishi shart")
+		.test(
+			"len",
+			"JSHSHIR 14 ta belgidan iborat bo'lishi shart",
+			(val) => val?.toString()?.length === 14
+		)
 		.required("JSHSHIR shart"),
 	ReliableFIO: yup.string().required("FISH shart"),
 	ReliablePosition: yup.string().required("Lavozim shart"),
