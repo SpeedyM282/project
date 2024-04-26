@@ -32,7 +32,11 @@ const Register = () => {
 	});
 
 	const onSubmit: SubmitHandler<FormData> = (data) => {
-		signUp(data).then(() => navigate("/login"));
+		signUp(data).then((res) => {
+			if (res) {
+				navigate("/login");
+			}
+		});
 	};
 
 	return (

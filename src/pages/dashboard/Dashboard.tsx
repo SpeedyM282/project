@@ -49,8 +49,10 @@ const Dashboard = () => {
 
 	const getProxiesPerPage = () => {
 		getProxies(page + 1).then((res: any) => {
-			setProxiesCount(res.data?.proxyCount);
-			setProxies(res.data?.data);
+			if (res) {
+				setProxiesCount(res.data?.proxyCount);
+				setProxies(res.data?.data);
+			}
 		});
 	};
 

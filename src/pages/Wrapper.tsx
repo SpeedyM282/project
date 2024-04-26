@@ -7,12 +7,13 @@ const Wrapper = () => {
 
 	useEffect(() => {
 		const token = localStorage.getItem("token");
-		if (token && location.pathname === "/") {
-			navigate("/dashboard");
-		} else if (!token && location.pathname === "/") {
+
+		if (!token && location.pathname !== "/register") {
 			navigate("/login");
+		} else if (token && location.pathname === "/") {
+			navigate("/dashboard");
 		}
-	}, []);
+	}, [location.pathname]);
 
 	return (
 		<>
