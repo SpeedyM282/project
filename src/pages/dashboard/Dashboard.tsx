@@ -61,8 +61,8 @@ const Dashboard = () => {
 	}, [page]);
 
 	const handleLogout = () => {
-		localStorage.setItem("token", "");
-		localStorage.setItem("inn", "");
+		sessionStorage.setItem("token", "");
+		sessionStorage.setItem("inn", "");
 		navigate("/login");
 	};
 

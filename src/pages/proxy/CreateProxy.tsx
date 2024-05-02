@@ -24,7 +24,7 @@ export interface IProduct {
 
 const CreateProxy = () => {
 	const navigate = useNavigate();
-	const myInn = localStorage.getItem("inn");
+	const myInn = sessionStorage.getItem("inn");
 	const [products, setProducts] = useState<IProduct[]>([
 		{
 			amount: 0,
@@ -73,7 +73,7 @@ const CreateProxy = () => {
 	};
 
 	useEffect(() => {
-		const enterpriseName = localStorage.getItem("name");
+		const enterpriseName = sessionStorage.getItem("name");
 		if (myInn) {
 			searchMyInn(myInn).then((res: any) => {
 				setValue("myEnterpriseInn", Number(myInn));

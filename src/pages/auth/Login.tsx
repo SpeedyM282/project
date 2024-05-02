@@ -31,9 +31,9 @@ const Login = () => {
 	const onSubmit: SubmitHandler<FormData> = (data) => {
 		login(data).then((res: any) => {
 			if (res?.data) {
-				localStorage.setItem("token", res?.data?.token || "");
-				localStorage.setItem("inn", res?.data?.enterprise?.inn || "");
-				localStorage.setItem("name", res?.data?.enterprise?.name || "");
+				sessionStorage.setItem("token", res?.data?.token || "");
+				sessionStorage.setItem("inn", res?.data?.enterprise?.inn || "");
+				sessionStorage.setItem("name", res?.data?.enterprise?.name || "");
 				navigate("/dashboard");
 			}
 		});

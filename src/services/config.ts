@@ -13,7 +13,7 @@ export const client = axios.create({
 // TO TAKE EVERYTIME UP TO DATE ACCESS_TOKEN
 client.interceptors.request.use(
 	(config) => {
-		const token = localStorage.getItem("token") || "";
+		const token = sessionStorage.getItem("token") || "";
 
 		if (token) {
 			config.headers.Authorization = `Bearer ${token}`;
