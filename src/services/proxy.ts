@@ -52,3 +52,12 @@ export const deleteProxy = (proxyId: string) =>
 			alert("Xatolik yuz berdi\nIltimos keyinroq urunib ko'ring");
 		}
 	});
+
+export const getCatalog = () =>
+	client.get("/proxy/katalog").catch((e) => {
+		if (e?.response?.data?.message) {
+			alert(e.response?.data?.message);
+		} else {
+			alert("Xatolik yuz berdi\nIltimos keyinroq urunib ko'ring");
+		}
+	});

@@ -17,6 +17,8 @@ import {
 	TextField,
 } from "@mui/material";
 import { productsArray, units } from "./helper";
+import { useEffect, useState } from "react";
+import { getCatalog } from "../../services/proxy";
 
 interface IProps {
 	products: IProduct[];
@@ -24,6 +26,16 @@ interface IProps {
 }
 
 const CreateProxyTable = ({ products, setProducts }: IProps) => {
+	const [catalog, setCatalog] = useState<string[]>([]);
+
+	useEffect(() => {
+		getCatalog().then((res) => {
+			if (res) {
+				setCatalog(res?.data?.katalog);
+			}
+		});
+	}, []);
+
 	const handleProductChange = (
 		event: any,
 		key: keyof IProduct,
@@ -96,7 +108,12 @@ const CreateProxyTable = ({ products, setProducts }: IProps) => {
 									{index + 1}
 								</TableCell>
 								<TableCell align="center">
-									<FormControl fullWidth>
+									<FormControl
+										fullWidth
+										sx={{
+											maxWidth: 500,
+										}}
+									>
 										<Select
 											labelId="demo-simple-select-label"
 											id="demo-simple-select"
@@ -105,11 +122,12 @@ const CreateProxyTable = ({ products, setProducts }: IProps) => {
 												handleProductChange(e, "productCatalog", index)
 											}
 										>
-											{productsArray.map((e) => (
-												<MenuItem key={e} value={e}>
-													{e}
-												</MenuItem>
-											))}
+											{!!catalog?.length &&
+												catalog?.map((e) => (
+													<MenuItem key={e} value={e}>
+														{e}
+													</MenuItem>
+												))}
 										</Select>
 									</FormControl>
 								</TableCell>
