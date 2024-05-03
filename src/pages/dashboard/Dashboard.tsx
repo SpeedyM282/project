@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 import { useEffect, useRef, useState } from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { deleteProxy, getProxies } from "../../services/proxy";
+import { deleteProxy, getProxies, searchProxy } from "../../services/proxy";
 import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 import {
 	Box,
@@ -18,6 +18,7 @@ import {
 	TableBody,
 	TableCell,
 	TableHead,
+	TextField,
 	Typography,
 	TableFooter,
 	TableContainer,
@@ -26,16 +27,23 @@ import {
 
 const Dashboard = () => {
 	const navigate = useNavigate();
+	const [page, setPage] = useState(0);
 	const handleOpen = () => setOpen(true);
 	const [open, setOpen] = useState(false);
 	const handleClose = () => setOpen(false);
 	const [proxies, setProxies] = useState([]);
 	const [printData, setPrintData] = useState<any>();
-	const [page, setPage] = useState(0);
 	const [proxiesCount, setProxiesCount] = useState(0);
+	const [filterDates, setFilterDates] = useState<{
+		dateHead: string;
+		dateEnd: string;
+	}>({
+		dateHead: "",
+		dateEnd: "",
+	});
 
 	const handleChangePage = (
-		event: React.MouseEvent<HTMLButtonElement> | null,
+		_: React.MouseEvent<HTMLButtonElement> | null,
 		newPage: number
 	) => {
 		setPage(newPage);
@@ -72,6 +80,14 @@ const Dashboard = () => {
 			getProxiesPerPage();
 		});
 	};
+
+	const handleFilter = () => {
+		searchProxy(filterDates).then((res) => {
+			console.log("RES", res);
+		});
+	};
+
+	console.log(filterDates);
 
 	return (
 		<>
@@ -134,7 +150,35 @@ const Dashboard = () => {
 					</Stack>
 				</Stack>
 
-				<Box m={"50px 0"}>
+				<Stack mt={5} direction="row" gap={3}>
+					<TextField
+						type="date"
+						label="*dan"
+						sx={{ width: 200 }}
+						InputLabelProps={{ shrink: true }}
+						onChange={(e) =>
+							setFilterDates((prev) => ({ ...prev, dateHead: e.target.value }))
+						}
+					/>
+					<TextField
+						type="date"
+						label="*gacha"
+						sx={{ width: 200 }}
+						InputLabelProps={{ shrink: true }}
+						onChange={(e) =>
+							setFilterDates((prev) => ({ ...prev, dateEnd: e.target.value }))
+						}
+					/>
+					<Button
+						variant="contained"
+						onClick={handleFilter}
+						disabled={!filterDates.dateEnd || !filterDates.dateHead}
+					>
+						Filtrlash
+					</Button>
+				</Stack>
+
+				<Box my={5}>
 					{proxies.length ? (
 						<TableContainer component={Paper}>
 							<Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -168,12 +212,12 @@ const Dashboard = () => {
 											<TableCell align="center">{proxy.proxyNumber}</TableCell>
 											<TableCell align="center">
 												{new Date(proxy.dateHead).getDate()}/
-												{new Date(proxy.dateHead).getMonth()}/
+												{new Date(proxy.dateHead).getMonth() + 1}/
 												{new Date(proxy.dateHead).getFullYear()}
 											</TableCell>
 											<TableCell align="center">
 												{new Date(proxy.dateEnd).getDate()}/
-												{new Date(proxy.dateEnd).getMonth()}/
+												{new Date(proxy.dateEnd).getMonth() + 1}/
 												{new Date(proxy.dateEnd).getFullYear()}
 											</TableCell>
 											<TableCell align="center">
@@ -181,7 +225,7 @@ const Dashboard = () => {
 											</TableCell>
 											<TableCell align="center">
 												{new Date(proxy.dateAgreement).getDate()}/
-												{new Date(proxy.dateAgreement).getMonth()}/
+												{new Date(proxy.dateAgreement).getMonth() + 1}/
 												{new Date(proxy.dateAgreement).getFullYear()}
 											</TableCell>
 											<TableCell align="center">

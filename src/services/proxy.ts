@@ -61,3 +61,12 @@ export const getCatalog = () =>
 			alert("Xatolik yuz berdi\nIltimos keyinroq urunib ko'ring");
 		}
 	});
+
+export const searchProxy = (data: { dateHead: string; dateEnd: string }) =>
+	client.post("/proxy/search", data).catch((e) => {
+		if (e?.response?.data?.message) {
+			alert(e.response?.data?.message);
+		} else {
+			alert("Xatolik yuz berdi\nIltimos keyinroq urunib ko'ring");
+		}
+	});
