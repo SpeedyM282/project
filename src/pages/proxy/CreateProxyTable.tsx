@@ -1,6 +1,9 @@
+import { units } from "./helper";
 import { IProduct } from "./CreateProxy";
 import Select from "@mui/material/Select";
+import { useEffect, useState } from "react";
 import MenuItem from "@mui/material/MenuItem";
+import { getCatalog } from "../../services/proxy";
 import FormControl from "@mui/material/FormControl";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import RemoveCircleOutlineRoundedIcon from "@mui/icons-material/RemoveCircleOutlineRounded";
@@ -12,13 +15,10 @@ import {
 	TableBody,
 	TableCell,
 	TableHead,
+	TextField,
 	IconButton,
 	TableContainer,
-	TextField,
 } from "@mui/material";
-import { productsArray, units } from "./helper";
-import { useEffect, useState } from "react";
-import { getCatalog } from "../../services/proxy";
 
 interface IProps {
 	products: IProduct[];
