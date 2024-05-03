@@ -83,11 +83,17 @@ const Dashboard = () => {
 
 	const handleFilter = () => {
 		searchProxy(filterDates).then((res) => {
-			console.log("RES", res);
+			if (res?.data) {
+				setProxiesCount(res.data?.proxyCount || res.data?.data?.length);
+				setProxies(res.data?.data);
+			}
 		});
 	};
 
-	console.log(filterDates);
+	const handleResetFilter = () => {
+		getProxiesPerPage();
+		setFilterDates({ dateEnd: "", dateHead: "" });
+	};
 
 	return (
 		<>
@@ -155,6 +161,7 @@ const Dashboard = () => {
 						type="date"
 						label="*dan"
 						sx={{ width: 200 }}
+						value={filterDates.dateHead}
 						InputLabelProps={{ shrink: true }}
 						onChange={(e) =>
 							setFilterDates((prev) => ({ ...prev, dateHead: e.target.value }))
@@ -164,17 +171,26 @@ const Dashboard = () => {
 						type="date"
 						label="*gacha"
 						sx={{ width: 200 }}
+						value={filterDates.dateEnd}
 						InputLabelProps={{ shrink: true }}
 						onChange={(e) =>
 							setFilterDates((prev) => ({ ...prev, dateEnd: e.target.value }))
 						}
 					/>
 					<Button
-						variant="contained"
+						variant="outlined"
 						onClick={handleFilter}
 						disabled={!filterDates.dateEnd || !filterDates.dateHead}
 					>
 						Filtrlash
+					</Button>
+					<Button
+						color="warning"
+						variant="outlined"
+						onClick={handleResetFilter}
+						disabled={!filterDates.dateEnd || !filterDates.dateHead}
+					>
+						Qaytarish
 					</Button>
 				</Stack>
 
